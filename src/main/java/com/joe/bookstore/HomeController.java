@@ -1,5 +1,6 @@
 package com.joe.bookstore;
 
+import com.joe.bookstore.model.Book;
 import com.joe.bookstore.model.Inquiry;
 import com.joe.bookstore.service.HomeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class HomeController {
@@ -34,8 +38,8 @@ public class HomeController {
 
     @PostMapping("/books")
     public String searchBooks(Model model, @ModelAttribute Inquiry inquiry) {
-        System.out.println(inquiry.getSearchString());
-        model.addAttribute("books", homeService.getBooks());
+        String bookTitle = inquiry.getSearchString();
+        model.addAttribute("books", homeService.searchedBooks(bookTitle));
         return "books";
     }
 
