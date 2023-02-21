@@ -1,10 +1,13 @@
 package com.joe.bookstore;
 
+import com.joe.bookstore.model.Inquiry;
 import com.joe.bookstore.service.HomeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class HomeController {
@@ -13,7 +16,8 @@ public class HomeController {
     private HomeService homeService;
 
     @GetMapping("/index")
-    public String index() {
+    public String index(Model model) {
+        model.addAttribute("inquiry", new Inquiry());
         return "index";
     }
 
@@ -24,9 +28,14 @@ public class HomeController {
 
     @GetMapping("/books")
     public String books(Model model) {
-
         model.addAttribute("books", homeService.getBooks());
+        return "books";
+    }
 
+    @PostMapping("/books")
+    public String searchBooks(Model model, @ModelAttribute Inquiry inquiry) {
+        System.out.println(inquiry.getSearchString());
+        model.addAttribute("books", homeService.getBooks());
         return "books";
     }
 
